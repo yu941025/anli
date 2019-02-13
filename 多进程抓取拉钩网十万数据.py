@@ -25,7 +25,7 @@ logger.addHandler(ch)
 logger.addHandler(fh)
 
 
-# 建立一个filehandler来把日志记录在文件里，级别为INFO以上
+
 
 def get_page_resp(url):
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
@@ -154,7 +154,7 @@ def main(pages):
 
         #logger.info('123456')
         mongo_table = i['name']
-        # 因为有的职位是以'.'开头的，比如.Net，数据库表名不能以.开头
+        # 有的职位是以'.'开头，，数据库表名不能以.开头
         if mongo_table[0] == '.':
             mongo_table = mongo_table[1:]
         # 我们把之前抓取职位所有招聘信息的程序整理为parse_link()函数
