@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 def get_html(url):
     # 指定一个浏览器头
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
-    # 代理，免费的代理只能维持一会可能就没用了，自行更换
+    
     proxies = {'http': '111.23.10.27:8080'}
     try:
         # Requests库的get请求
