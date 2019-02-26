@@ -24,9 +24,6 @@ fh.setFormatter(formatter)
 logger.addHandler(ch)
 logger.addHandler(fh)
 
-
-
-
 def get_page_resp(url):
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
         'Host':'www.lagou.com',
@@ -41,18 +38,12 @@ def get_page_resp(url):
         if resp.status_code == 200:
 
             return resp.text
-
-
     except RequestException as e:
         print(e)
-
-
 def parse_index():
     url='https://www.lagou.com/'
 
     soup=BeautifulSoup(get_page_resp(url),'lxml')
-
-
     #logger.error('错误')
 
     all_positions=soup.select('div.menu_sub.dn > dl > dd > a')
@@ -86,13 +77,7 @@ def get_message(url,pages,mongo_table):
 
     resp=requests.get(ur,headers=headers,timeout=3)
     time.sleep(2)
-
-
-
-
     soup=BeautifulSoup(resp.text,'lxml')
-
-
     # 职位信息
     positions = soup.select('ul > li > div.list_item_top > div.position > div.p_top > a > h3')
     # 工作地址
@@ -106,7 +91,6 @@ def get_message(url,pages,mongo_table):
     # 发布公司
     companys = soup.select('ul > li > div.list_item_top > div.company > div.company_name > a')
     '''tags = []
-    # 由于我发现有的招聘信息没有标签信息，if判断防止没有标签报错
     if soup.find('div', class_='li_b_l'):
         # 招聘信息标签'''
     tags = soup.select('ul > li > div.list_item_bot > div.li_b_l')
@@ -131,42 +115,18 @@ def get_message(url,pages,mongo_table):
         url_list.insert_one(data)
         logger.info('保存数据库成功:%s'%data)
     client.close()
-
-
-
-
-
-
-
 from multiprocessing import Pool
 def main(pages):
     datas = parse_index()
     time.sleep(2)
-
-
-
-
     for i in datas:
-
         url = i['url']
-
-
-
         #logger.info('123456')
         mongo_table = i['name']
-        # 有的职位是以'.'开头，，数据库表名不能以.开头
+        # 有的职位是类似.net以'.'开头，数据库表名不能以.开头,所以需要判断下
         if mongo_table[0] == '.':
-            mongo_table = mongo_table[1:]
-        # 我们把之前抓取职位所有招聘信息的程序整理为parse_link()函数
-        # 这个函数接收职位url，页码，和数据库表名为参数
+            mongo_table = mongo_table[1:
         get_message(url, pages, mongo_table)
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     '''pool = Pool(processes=1)
